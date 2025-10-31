@@ -34,8 +34,9 @@ else:
 from ultralytics import YOLO
 import cv2
 
-# Import output helper for organized file management
+# Import helpers for organized file management and GPU selection
 from output_helper import create_output_directory, get_output_path, print_output_summary, get_timestamped_filename
+from gpu_helper import select_best_device, setup_device_for_model
 
 
 def basic_segmentation():
@@ -55,9 +56,13 @@ def basic_segmentation():
     
     print("✅ Model loaded successfully!")
     
+    # 🖥️ Setup optimal device (CPU/GPU) automatically
+    print("\n🖥️ Configuring compute device...")
+    device = select_best_device(prefer_gpu=True, verbose=True)
+    
     # Example 1: Segment an image from URL
     print("\n📸 Example 1: Segmenting image from URL")
-    results = model('https://ultralytics.com/images/bus.jpg')
+    results = model('https://ultralytics.com/images/bus.jpg', device=device)
     
     # Process results
     for i, result in enumerate(results):
@@ -106,11 +111,12 @@ def segment_custom_image(image_path):
     print(f"📁 Output directory: {output_dir}")
     files_created = []
     
-    # Load model
+    # Load model and setup device
     model = YOLO('yolo11n-seg.pt')
+    device = select_best_device(prefer_gpu=True, verbose=False)
     
     # Run segmentation
-    results = model(image_path)
+    results = model(image_path, device=device)
     
     # Process and save results
     for result in results:
@@ -148,18 +154,22 @@ def advanced_segmentation_options():
     
     # Use shared output directory for advanced results
     output_dir = create_output_directory()
+    
+    # Setup device for advanced options
+    device = select_best_device(prefer_gpu=True, verbose=False)
     print(f"📁 Output directory: {output_dir}")
     files_created = []
     
     model = YOLO('yolo11n-seg.pt')
     
     # Segment with custom parameters
+    print("\n⚙️ Example with custom parameters...")
     results = model(
         'https://ultralytics.com/images/bus.jpg',
         conf=0.3,      # Confidence threshold
         iou=0.5,       # IoU threshold for NMS
         imgsz=640,     # Image size
-        device='cpu'   # Force CPU (use 'cuda' for GPU)
+        device=device  # Use auto-selected device
     )
     
     # Access detailed information
