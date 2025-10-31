@@ -21,8 +21,14 @@ from pathlib import Path
 # Add the local ultralytics directory to Python path
 # This allows importing from the local source code instead of installed package
 current_dir = Path(__file__).parent
-ultralytics_source_dir = current_dir / "ultralytics"
-sys.path.insert(0, str(ultralytics_source_dir))
+ultralytics_source_dir = current_dir.parent / "ultralytics"  # Go up to parent, then to ultralytics
+print(f"Looking for ultralytics at: {ultralytics_source_dir}")
+if ultralytics_source_dir.exists():
+    sys.path.insert(0, str(ultralytics_source_dir))
+    print(f"✅ Added ultralytics path: {ultralytics_source_dir}")
+else:
+    print(f"❌ Ultralytics not found at: {ultralytics_source_dir}")
+    print("💡 Falling back to installed package")
 
 # Now import from the local ultralytics source
 from ultralytics import YOLO
