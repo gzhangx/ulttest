@@ -1,0 +1,18 @@
+# Requirements for Ultralytics Image Segmentation Examples
+# 
+# Core requirements
+ultralytics>=8.0.0
+
+# Optional requirements for enhanced functionality
+opencv-python>=4.5.0        # For advanced image/video processing
+matplotlib>=3.3.0           # For visualization and plotting
+pillow>=8.0.0              # For image handling
+numpy>=1.21.0              # For numerical operations
+
+# Optional: For GPU acceleration (uncomment if you have CUDA)
+# torch>=2.0.0+cu118         # PyTorch with CUDA support
+# torchvision>=0.15.0+cu118  # TorchVision with CUDA support
+
+# Development/Testing (optional)
+# pytest>=6.0.0             # For running tests
+# jupyter>=1.0.0             # For notebook examples

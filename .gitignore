@@ -1,0 +1,7 @@
+cv
+__pycache__
+clean_demo_result.jpg
+yolo11n-seg.pt
+bus.jpg
+testdata
+segmentation_result.jpg
