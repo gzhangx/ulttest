@@ -31,7 +31,8 @@ from pathlib import Path
 # Add the local ultralytics directory to Python path
 # This allows importing from the local source code instead of installed package
 current_dir = Path(__file__).parent
-ultralytics_source_dir = current_dir / "ultralytics"
+print(f"Current directory: {current_dir}")
+ultralytics_source_dir = current_dir / "../ultralytics"
 sys.path.insert(0, str(ultralytics_source_dir))
 
 # Now import from the local ultralytics source
@@ -378,6 +379,7 @@ def main():
         # Extract detailed features
         features = demo.extract_masks_and_features(str(sample_image))
         
+        print(f"\nExtracted Features Summary:"+str(sample_image))
         # Create custom visualization
         demo.custom_visualization(str(sample_image), 'custom_segmentation_result.png')
     else:

@@ -26,11 +26,12 @@ def setup_local_ultralytics(verbose=True):
         bool: True if local ultralytics was found and added to path, False otherwise
     """
     current_dir = Path(__file__).parent
-    ultralytics_source_dir = current_dir / "ultralytics"
+    ultralytics_source_dir = current_dir / "../ultralytics"
     
     # Check if local ultralytics exists
-    ultralytics_init_file = ultralytics_source_dir / "ultralytics" / "__init__.py"
+    ultralytics_init_file = ultralytics_source_dir / "__init__.py"
     
+    print(f"Looking for local ultralytics at:--------------------- {ultralytics_init_file}")
     if ultralytics_init_file.exists():
         # Add to Python path if not already there
         ultralytics_path_str = str(ultralytics_source_dir)
