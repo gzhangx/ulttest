@@ -27,8 +27,8 @@ def run_segmentation_demo():
     print("\n🎯 Clean Segmentation Demo")
     print("=" * 30)
     
-    # Create output directory for results
-    output_dir = create_output_directory("clean_demo_output")
+    # Use shared output directory
+    output_dir = create_output_directory()
     print(f"📁 Output directory: {output_dir}")
     files_created = []
     
@@ -60,8 +60,9 @@ def run_segmentation_demo():
             
             print(f"📋 Detected: {', '.join(detected_classes)}")
             
-            # Save result to output directory
-            output_path = get_output_path(output_dir, 'clean_demo_result.jpg')
+            # Save result to shared output directory
+            timestamped_filename = get_timestamped_filename('clean_demo_result.jpg', 'clean')
+            output_path = output_dir / timestamped_filename
             result.save(str(output_path))
             files_created.append(output_path.name)
             print(f"💾 Result saved to: {output_path}")

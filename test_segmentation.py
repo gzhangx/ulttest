@@ -30,10 +30,10 @@ def test_segmentation():
         print("✅ Ultralytics imported successfully")
         
         # Import output helper for organized results
-        from output_helper import create_output_directory, get_output_path
+        from output_helper import create_output_directory, get_timestamped_filename
         
-        # Create output directory for test results
-        output_dir = create_output_directory("test_output", add_timestamp=False)
+        # Use shared output directory for test results
+        output_dir = create_output_directory()
         print(f"📁 Test output directory: {output_dir}")
         
         # Load model (will auto-download if needed)
@@ -63,8 +63,9 @@ def test_segmentation():
             if result.masks is not None:
                 print(f"🎭 Generated {len(result.masks)} segmentation masks")
             
-            # Save result to output directory
-            output_path = get_output_path(output_dir, 'test_segmentation_output.jpg')
+            # Save result to shared output directory
+            timestamped_filename = get_timestamped_filename('test_segmentation_output.jpg', 'test')
+            output_path = output_dir / timestamped_filename
             result.save(str(output_path))
             print(f"💾 Result saved to: {output_path}")
             
