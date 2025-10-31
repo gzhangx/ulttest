@@ -12,8 +12,12 @@ from pathlib import Path
 
 # Add the local ultralytics directory to Python path
 current_dir = Path(__file__).parent
-ultralytics_source_dir = current_dir / "ultralytics"  # Points to ultralytics/ultralytics/
-sys.path.insert(0, str(ultralytics_source_dir))
+ultralytics_source_dir = current_dir.parent / "ultralytics"  # Go up to parent, then to ultralytics
+if ultralytics_source_dir.exists():
+    sys.path.insert(0, str(ultralytics_source_dir))
+    print(f"✅ Added ultralytics path: {ultralytics_source_dir}")
+else:
+    print(f"❌ Ultralytics not found at: {ultralytics_source_dir}")
 
 # Now import from the local source
 from ultralytics import YOLO
@@ -76,11 +80,21 @@ Your current structure:
 │   ├── examples/
 │   ├── tests/
 │   └── pyproject.toml
+├── ulttest/                       # Your example scripts directory
+│   ├── simple_segmentation.py
+│   ├── image_segmentation_sample.py
+│   ├── ultralytics_import_helper.py
+│   └── ...
 ├── cv/                            # Virtual environment
-└── your_scripts.py               # Your segmentation scripts
+└── other files...
 ```
 
 The key is that you need to add `/mnt/d/work/cur/ultralitics/ultralytics` (the outer one) to your Python path so that Python can find the `ultralytics` package inside it.
+
+**For scripts in the `ulttest` subdirectory**, the path calculation becomes:
+- Current directory: `/mnt/d/work/cur/ultralitics/ulttest`  
+- Go up one level: `/mnt/d/work/cur/ultralitics`
+- Then into ultralytics: `/mnt/d/work/cur/ultralitics/ultralytics`
 
 ## Verification
 

@@ -320,9 +320,13 @@ class ImageSegmentationDemo:
                 mask_array = mask.data.cpu().numpy()[0]
                 color = (np.array(colors[i][:3]) * 255).astype(np.uint8)
                 
+                # Resize mask to match original image dimensions
+                mask_resized = cv2.resize(mask_array.astype(np.uint8), 
+                                        (image_rgb.shape[1], image_rgb.shape[0]))
+                
                 # Create colored mask
                 colored_mask = np.zeros_like(image_rgb)
-                colored_mask[mask_array > 0.5] = color
+                colored_mask[mask_resized > 0.5] = color
                 
                 # Blend with original image
                 mask_overlay = cv2.addWeighted(mask_overlay, 0.8, colored_mask, 0.3, 0)
