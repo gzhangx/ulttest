@@ -34,12 +34,20 @@ else:
 from ultralytics import YOLO
 import cv2
 
+# Import output helper for organized file management
+from output_helper import create_output_directory, get_output_path, print_output_summary, get_timestamped_filename
+
 
 def basic_segmentation():
     """
     Basic image segmentation example.
     """
     print("🚀 Loading YOLO segmentation model...")
+    
+    # Create shared output directory
+    output_dir = create_output_directory()
+    print(f"📁 Output directory: {output_dir}")
+    files_created = []
     
     # Load a segmentation model (will download automatically if not present)
     model = YOLO('yolo11n-seg.pt')  # nano version for speed
@@ -67,9 +75,15 @@ def basic_segmentation():
         if result.masks is not None:
             print(f"Generated {len(result.masks)} segmentation masks")
         
-        # Save the annotated image
-        result.save('segmentation_result.jpg')
-        print("💾 Result saved as 'segmentation_result.jpg'")
+        # Save the annotated image to shared output directory with timestamp
+        timestamped_filename = get_timestamped_filename('bus_segmentation_result.jpg', 'simple')
+        output_path = output_dir / timestamped_filename
+        result.save(str(output_path))
+        files_created.append(output_path.name)
+        print(f"💾 Result saved to: {output_path}")
+    
+    # Print summary of created files
+    print_output_summary(output_dir, files_created)
     
     return results
 
@@ -86,6 +100,11 @@ def segment_custom_image(image_path):
         return None
     
     print(f"\n📸 Segmenting custom image: {image_path}")
+    
+    # Use shared output directory
+    output_dir = create_output_directory()
+    print(f"📁 Output directory: {output_dir}")
+    files_created = []
     
     # Load model
     model = YOLO('yolo11n-seg.pt')
@@ -108,10 +127,15 @@ def segment_custom_image(image_path):
         else:
             print("No objects detected")
         
-        # Save result with segmentation masks
-        output_path = f"segmented_{Path(image_path).name}"
-        result.save(output_path)
-        print(f"💾 Result saved as '{output_path}'")
+        # Save result with segmentation masks to shared output directory
+        timestamped_filename = get_timestamped_filename(f"segmented_{Path(image_path).name}", 'custom')
+        output_path = output_dir / timestamped_filename
+        result.save(str(output_path))
+        files_created.append(output_path.name)
+        print(f"💾 Result saved to: {output_path}")
+    
+    # Print summary of created files
+    print_output_summary(output_dir, files_created)
     
     return results
 
@@ -121,6 +145,11 @@ def advanced_segmentation_options():
     Demonstrate advanced segmentation options.
     """
     print("\n🔧 Advanced Segmentation Options")
+    
+    # Use shared output directory for advanced results
+    output_dir = create_output_directory()
+    print(f"📁 Output directory: {output_dir}")
+    files_created = []
     
     model = YOLO('yolo11n-seg.pt')
     
@@ -155,7 +184,16 @@ def advanced_segmentation_options():
             
             print(f"Box coordinates shape: {boxes.shape}")
             print(f"Confidence scores: {confidences}")
+        
+        # Save advanced results
+        timestamped_filename = get_timestamped_filename('advanced_segmentation_result.jpg', 'advanced')
+        output_path = output_dir / timestamped_filename
+        result.save(str(output_path))
+        files_created.append(output_path.name)
+        print(f"💾 Advanced result saved to: {output_path}")
     
+    # Print summary of created files
+    print_output_summary(output_dir, files_created)
     return results
 
 

@@ -16,6 +16,9 @@ setup_local_ultralytics(verbose=True)
 from ultralytics import YOLO
 from pathlib import Path
 
+# Import output helper for organized file management
+from output_helper import create_output_directory, get_output_path, print_output_summary, get_timestamped_filename
+
 
 def run_segmentation_demo():
     """
@@ -23,6 +26,11 @@ def run_segmentation_demo():
     """
     print("\n🎯 Clean Segmentation Demo")
     print("=" * 30)
+    
+    # Create output directory for results
+    output_dir = create_output_directory("clean_demo_output")
+    print(f"📁 Output directory: {output_dir}")
+    files_created = []
     
     # Verify our setup
     if not verify_ultralytics_import(verbose=False):
@@ -52,10 +60,14 @@ def run_segmentation_demo():
             
             print(f"📋 Detected: {', '.join(detected_classes)}")
             
-            # Save result
-            result.save('clean_demo_result.jpg')
-            print("💾 Result saved as 'clean_demo_result.jpg'")
+            # Save result to output directory
+            output_path = get_output_path(output_dir, 'clean_demo_result.jpg')
+            result.save(str(output_path))
+            files_created.append(output_path.name)
+            print(f"💾 Result saved to: {output_path}")
             
+            # Print summary of created files
+            print_output_summary(output_dir, files_created)
             return True
         else:
             print("❌ No objects detected")

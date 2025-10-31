@@ -44,6 +44,9 @@ else:
 from ultralytics import YOLO
 from ultralytics.utils import ASSETS
 
+# Import output helper for organized file management
+from output_helper import setup_output_structure, get_output_path, print_output_summary, get_timestamped_filename
+
 
 class ImageSegmentationDemo:
     """
@@ -374,6 +377,14 @@ def main():
     print("🚀 Ultralytics Image Segmentation Demo")
     print("=" * 50)
     
+    # Setup shared output structure
+    output_structure = setup_output_structure()
+    print(f"📁 Output base directory: {output_structure['base']}")
+    print(f"   Subdirectories: images, videos, visualizations, data, logs")
+    
+    # Track all created files
+    all_files_created = []
+    
     # Initialize the segmentation model
     # You can change this to other models like yolo11s-seg.pt, yolo11m-seg.pt, etc.
     demo = ImageSegmentationDemo("yolo11n-seg.pt")
@@ -383,14 +394,22 @@ def main():
     sample_image = ASSETS / 'bus.jpg'  # Built-in sample image
     
     if sample_image.exists():
-        results = demo.segment_single_image(str(sample_image))
+        # Single image segmentation with output to images directory
+        timestamped_filename = get_timestamped_filename('bus_segmentation_result.jpg', 'comprehensive')
+        image_output_path = output_structure['images'] / timestamped_filename
+        results = demo.segment_single_image(str(sample_image), str(image_output_path))
+        all_files_created.append(image_output_path)
         
         # Extract detailed features
         features = demo.extract_masks_and_features(str(sample_image))
         
-        print(f"\nExtracted Features Summary:"+str(sample_image))
-        # Create custom visualization
-        demo.custom_visualization(str(sample_image), 'custom_segmentation_result.png')
+        print(f"\nExtracted Features Summary: {sample_image}")
+        
+        # Create custom visualization in visualizations directory
+        timestamped_viz_filename = get_timestamped_filename('custom_segmentation_analysis.png', 'comprehensive')
+        viz_output_path = output_structure['visualizations'] / timestamped_viz_filename
+        demo.custom_visualization(str(sample_image), str(viz_output_path))
+        all_files_created.append(viz_output_path)
     else:
         print("Sample image not found. Please provide your own image path.")
         # Example with custom image:
@@ -399,24 +418,30 @@ def main():
     # Demo 2: Batch processing (uncomment to use with your own images)
     print(f"\n📁 Demo 2: Batch Processing")
     print("To use batch processing, uncomment the following lines and provide your image folder:")
-    print("# demo.segment_batch_images('path/to/image/folder', 'path/to/output/folder')")
+    print(f"# demo.segment_batch_images('path/to/image/folder', '{output_structure['images']}')")
     
     # Demo 3: Video processing (uncomment to use with your own video)
     print(f"\n🎥 Demo 3: Video Processing")
     print("To process videos, uncomment the following lines and provide your video path:")
-    print("# demo.segment_video('path/to/video.mp4', 'output_video.mp4')")
+    video_output_path = output_structure['videos'] / 'segmented_video.mp4'
+    print(f"# demo.segment_video('path/to/video.mp4', '{video_output_path}')")
     
     # Demo 4: Model information
     print(f"\n📊 Model Information:")
     print(f"Model names/classes: {list(demo.model.names.values())[:10]}...")  # Show first 10 classes
     print(f"Total classes: {len(demo.model.names)}")
     
+    # Print comprehensive output summary
+    print_output_summary(output_structure['base'], all_files_created)
+    
     print("\n✅ Demo completed successfully!")
+    print(f"\n📂 All outputs saved to: {output_structure['base'].absolute()}")
     print("\nNext steps:")
     print("1. Replace sample images with your own images")
     print("2. Adjust confidence thresholds using: model.predict(source, conf=0.5)")
     print("3. Train custom models on your own data")
     print("4. Export models to different formats (ONNX, TensorRT, etc.)")
+    print(f"5. Check the organized outputs in: {output_structure['base']}")
 
 
 if __name__ == "__main__":

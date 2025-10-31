@@ -4,14 +4,22 @@ This directory contains Python examples for performing image segmentation using 
 
 ## Files Overview
 
+### Core Examples
 - **`simple_segmentation.py`** - Basic segmentation example, perfect for beginners
 - **`image_segmentation_sample.py`** - Comprehensive example with advanced features
 - **`clean_segmentation_example.py`** - Clean example using the import helper
 - **`test_segmentation.py`** - Quick test script to verify setup
+
+### Utilities
 - **`ultralytics_import_helper.py`** - Utility for importing from local ultralytics source
+- **`output_helper.py`** - NEW: Organized output directory management
 - **`requirements_segmentation.txt`** - Python dependencies
-- **`IMPORT_GUIDE.md`** - Detailed guide for importing from local source code
+
+### Documentation
 - **`README_SEGMENTATION.md`** - This documentation file
+- **`IMPORT_GUIDE.md`** - Detailed guide for importing from local source code
+- **`OUTPUT_MANAGEMENT.md`** - NEW: Guide for organized output directories
+- **`FIX_SUMMARY.md`** - Summary of import fixes for moved directories
 
 ## Quick Start
 
@@ -34,7 +42,8 @@ python simple_segmentation.py
 This will:
 - Download the YOLO11n segmentation model (if not already downloaded)
 - Perform segmentation on a sample image
-- Save the annotated result as `segmentation_result.jpg`
+- Create timestamped output directory and save organized results
+- Show summary of created files with sizes
 
 ### 2b. Using Local Ultralytics Source Code
 
@@ -233,12 +242,42 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 python -c "import torch; print(torch.cuda.is_available())"
 ```
 
-## Further Resources
+## 🌟 **Key Features**
+
+### 🔧 **Smart Import Management**
+- **Automatic Detection**: Scripts automatically detect and use local ultralytics source
+- **Fallback Support**: Falls back to installed package if local source not found
+- **Reusable Helper**: Import helper can be used across multiple projects
+- **Clear Feedback**: Status messages show which ultralytics version is being used
+
+### 📁 **Organized Output Management** (NEW!)
+- **Automatic Directories**: Creates timestamped output directories for each run
+- **Clean Workspace**: No more scattered files in root directory
+- **Structured Organization**: Separate folders for images, videos, visualizations, data
+- **File Summaries**: Shows created files with sizes and locations
+- **Easy Discovery**: Clear paths to all generated content
+
+### 📊 **Example Output Structure**
+```
+simple_segmentation_output_20251031_143741/
+├── bus_segmentation_result.jpg (350.5KB)
+└── advanced_segmentation_result.jpg (350.5KB)
+
+comprehensive_segmentation_demo_20251031_143800/
+├── images/           # Segmented images
+├── videos/           # Processed videos  
+├── visualizations/   # Analysis plots
+├── data/            # Extracted features
+└── logs/            # Processing logs
+```
+
+### 📚 **Further Resources**
 
 - [Ultralytics Documentation](https://docs.ultralytics.com/)
 - [YOLO Segmentation Guide](https://docs.ultralytics.com/tasks/segment/)
 - [Model Training Tutorial](https://docs.ultralytics.com/modes/train/)
 - [Export Models Guide](https://docs.ultralytics.com/modes/export/)
+- [OUTPUT_MANAGEMENT.md](OUTPUT_MANAGEMENT.md) - Detailed output organization guide
 
 ## License
 

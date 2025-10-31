@@ -29,6 +29,13 @@ def test_segmentation():
         from ultralytics import YOLO
         print("✅ Ultralytics imported successfully")
         
+        # Import output helper for organized results
+        from output_helper import create_output_directory, get_output_path
+        
+        # Create output directory for test results
+        output_dir = create_output_directory("test_output", add_timestamp=False)
+        print(f"📁 Test output directory: {output_dir}")
+        
         # Load model (will auto-download if needed)
         print("📥 Loading YOLO segmentation model...")
         model = YOLO('yolo11n-seg.pt')
@@ -56,9 +63,10 @@ def test_segmentation():
             if result.masks is not None:
                 print(f"🎭 Generated {len(result.masks)} segmentation masks")
             
-            # Save result
-            result.save('test_segmentation_output.jpg')
-            print("💾 Result saved as 'test_segmentation_output.jpg'")
+            # Save result to output directory
+            output_path = get_output_path(output_dir, 'test_segmentation_output.jpg')
+            result.save(str(output_path))
+            print(f"💾 Result saved to: {output_path}")
             
             return True
         else:
