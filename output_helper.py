@@ -171,22 +171,28 @@ if __name__ == "__main__":
     print("📁 Output Directory Helper Demo")
     print("=" * 40)
     
-    # Demo 1: Simple output directory
-    print("\n1. Creating simple output directory:")
-    output_dir = create_output_directory("test_output")
+    # Demo 1: Shared output directory
+    print("\n1. Creating shared output directory:")
+    output_dir = create_output_directory()
     print(f"   Created: {output_dir}")
     
-    # Demo 2: Structured output
-    print("\n2. Creating structured output:")
-    structure = setup_output_structure("demo_outputs")
+    # Demo 2: Structured output with subdirectories
+    print("\n2. Creating structured shared output:")
+    structure = setup_output_structure()
     print(f"   Base directory: {structure['base']}")
     print(f"   Subdirectories: {list(structure.keys())[1:]}")
     
-    # Demo 3: Output path generation
-    print("\n3. Generating output paths:")
+    # Demo 3: Timestamped filename generation
+    print("\n3. Generating timestamped filenames:")
     test_file = "sample_image.jpg"
-    output_path = get_output_path(output_dir, test_file, prefix="segmented_", suffix="_result")
+    timestamped_filename = get_timestamped_filename(test_file, "demo")
     print(f"   Original: {test_file}")
-    print(f"   Output: {output_path}")
+    print(f"   Timestamped: {timestamped_filename}")
+    
+    # Demo 4: Output path generation with uniqueness
+    print("\n4. Generating unique output paths:")
+    output_path = get_output_path(output_dir, test_file, prefix="processed_", make_unique=True)
+    print(f"   Original: {test_file}")
+    print(f"   Output path: {output_path}")
     
     print("\n✅ Demo completed!")
